@@ -1,13 +1,5 @@
-// Global Objects
-// TODO: import
-export const Game = {
-    // TODO: functions like change page title
-    showText: (text: string | number) => {
-        
-    }
-}
+import { Game } from "./game"
 
-const Player = {
-    x: 0,
-    y: 0
-}
+const game = new Game()
+game.start()
+export default game

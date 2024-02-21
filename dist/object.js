@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.GameObject = void 0;
 var GameObject = /** @class */ (function () {
     function GameObject(x, y, shape, color) {
         this.x = x;
@@ -10,4 +7,4 @@ var GameObject = /** @class */ (function () {
     }
     return GameObject;
 }());
-exports.GameObject = GameObject;
+export { GameObject };
