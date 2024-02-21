@@ -1,0 +1,1 @@
+Just add a file named script.js (or any other name if you know how to change it in the html) in the base folder, import game from dist/main.js, and get coding!

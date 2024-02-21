@@ -42,7 +42,6 @@ export class Canvas {
     }
 
     public drawCircle(x: number, y: number, radius: number, color: string) {
-        // TODO:
         const circle = new Path2D()
         circle.ellipse(x, y, radius, radius, 0, 0, 360, false)
         circle.closePath()
@@ -51,7 +50,11 @@ export class Canvas {
     }
 
     public drawRectangle(x: number, y: number, width: number, height: number, color: string) {
-        // TODO
+        const rectangle = new Path2D()
+        rectangle.rect(x - width / 2, y - height / 2, width, height)
+        rectangle.closePath()
+        this.ctx.fillStyle = color
+        this.ctx.fill(rectangle)
     }
 
     private resizeCanvas(canvas: HTMLCanvasElement) {

@@ -34,7 +34,6 @@ var Canvas = /** @class */ (function () {
         }
     };
     Canvas.prototype.drawCircle = function (x, y, radius, color) {
-        // TODO:
         var circle = new Path2D();
         circle.ellipse(x, y, radius, radius, 0, 0, 360, false);
         circle.closePath();
@@ -42,7 +41,11 @@ var Canvas = /** @class */ (function () {
         this.ctx.fill(circle);
     };
     Canvas.prototype.drawRectangle = function (x, y, width, height, color) {
-        // TODO
+        var rectangle = new Path2D();
+        rectangle.rect(x - width / 2, y - height / 2, width, height);
+        rectangle.closePath();
+        this.ctx.fillStyle = color;
+        this.ctx.fill(rectangle);
     };
     Canvas.prototype.resizeCanvas = function (canvas) {
         canvas.width = window.innerWidth;

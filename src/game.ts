@@ -48,6 +48,7 @@ export class Game {
     // TODO: showText
 
     public mapKey(key: string, callback: () => void) {
+        // TODO: press once only option
         if (!this.keyMap[key]) {
             this.keyMap[key] = []
         }
@@ -65,6 +66,8 @@ export class Game {
     public setBackgroundColor(color: string) {
         this.canvas.setClearColor(color)
     }
+
+    // TODO: are two objects colliding function
 
     private loop(timestamp: number) {
         window.requestAnimationFrame(this.loop.bind(this))

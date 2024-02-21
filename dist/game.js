@@ -26,6 +26,7 @@ var Game = /** @class */ (function () {
     };
     // TODO: showText
     Game.prototype.mapKey = function (key, callback) {
+        // TODO: press once only option
         if (!this.keyMap[key]) {
             this.keyMap[key] = [];
         }
