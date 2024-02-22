@@ -9,10 +9,9 @@ There are a lot of methods available on the game object you imported, here's a l
 Takes in a function that the game will execute every frame. This function can take an optional argument that the game will supply with the amount of time that has elapsed since the previous frame, also known as deltatime. This is useful for timers, or for making behaviour independent from the framerate.
 
 ### createObject(x, y, shape, color)
-Creates a new object at position (x, y) and adds it to the game. Shape takes in either a Rectangle or Circle (imported from dist/shape.js), describes the hitbox of the object, and if you provide a color in any valid css color format, the game will also render this shape to the screen. This function then returns the new object to you, so you can whatever you want with it.
+Creates a new object at position (x, y) and adds it to the game. Shape takes in either a Rectangle or Circle (imported from dist/shape.js), describes the hitbox of the object, and if you provide a color string in any valid css color format, the game will also render this shape to the screen. This function then returns the new object to you, so you can whatever you want with it.
 
-### mapLeftMouseButton(callback)
-### mapRightMouseButton(callback)
+### mapLeftMouseButton(callback), mapRightMouseButton(callback)
 Will call the provided callback function every frame if the user holds down their left or right mouse button.
 
 ### mapKey(key, callback)
