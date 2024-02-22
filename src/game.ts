@@ -44,7 +44,7 @@ export class Game {
         this.tickers.push(ticker)
     }
 
-    public createObject(x: number, y: number, shape: Shape, color: string | null) {
+    public createObject(x: number, y: number, shape: Shape, color: string | null): GameObject {
         const object = new GameObject(x, y, shape, color)
         this.objects.push(object)
         return object
