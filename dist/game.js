@@ -2,6 +2,7 @@ import { Canvas } from "./canvas.js";
 import { GameObject } from "./object.js";
 var Game = /** @class */ (function () {
     function Game() {
+        this.running = false;
         this.canvas = new Canvas(document.body);
         this.objects = [];
         this.tickers = [];
@@ -14,7 +15,10 @@ var Game = /** @class */ (function () {
     }
     // TODO: stop / pause
     Game.prototype.start = function () {
+        if (this.running)
+            return;
         window.requestAnimationFrame(this.loop.bind(this));
+        this.running = true;
     };
     Game.prototype.addTicker = function (ticker) {
         this.tickers.push(ticker);
@@ -41,7 +45,57 @@ var Game = /** @class */ (function () {
     Game.prototype.setBackgroundColor = function (color) {
         this.canvas.setClearColor(color);
     };
+    Game.prototype.areColliding = function (object1, object2) {
+        if (object1.shape.type === "rectangle") {
+            if (object2.shape.type === "rectangle") {
+                return this.rectOnRectCollision(object1, object2);
+            }
+            if (object2.shape.type === "circle") {
+                return this.rectOnCircleCollision(object1, object2);
+            }
+        }
+        if (object1.shape.type === "circle") {
+            if (object2.shape.type === "circle") {
+                return this.circleOnCircleCollision(object1, object2);
+            }
+            if (object2.shape.type === "rectangle") {
+                return this.rectOnCircleCollision(object2, object1);
+            }
+        }
+    };
+    Game.prototype.rectOnRectCollision = function (rect1, rect2) {
+        var hDist = Math.abs(rect1.x - rect2.x);
+        var vDist = Math.abs(rect1.y - rect2.y);
+        var halfWidth1 = rect1.shape.width / 2;
+        var halfWidth2 = rect2.shape.width / 2;
+        var halfHeight1 = rect1.shape.height / 2;
+        var halfHeight2 = rect2.shape.height / 2;
+        return hDist < Math.abs(halfWidth1 + halfWidth2)
+            && vDist < Math.abs(halfHeight1 + halfHeight2);
+    };
+    Game.prototype.rectOnCircleCollision = function (rect, circle) {
+        var testX = circle.x;
+        var testY = circle.y;
+        var lEdge = rect.x - rect.shape.width / 2;
+        var rEdge = rect.x + rect.shape.width / 2;
+        var tEdge = rect.y - rect.shape.height / 2;
+        var bEdge = rect.y + rect.shape.height / 2;
+        if (lEdge > circle.x)
+            testX = lEdge;
+        else if (rEdge < circle.x)
+            testX = rEdge;
+        if (tEdge > circle.y)
+            testY = tEdge;
+        else if (bEdge < circle.y)
+            testY = bEdge;
+        return Math.pow(testX - circle.x, 2) + Math.pow(testY - circle.y, 2) < Math.pow(circle.shape.radius, 2);
+    };
+    Game.prototype.circleOnCircleCollision = function (circle1, circle2) {
+        return Math.pow(circle2.x - circle1.x, 2) + Math.pow(circle2.y - circle1.y, 2) < Math.pow(circle1.shape.radius + circle2.shape.radius, 2);
+    };
     Game.prototype.loop = function (timestamp) {
+        if (!this.running)
+            return;
         window.requestAnimationFrame(this.loop.bind(this));
         var deltaTime = timestamp - this.lastTime;
         this.lastTime = timestamp;
@@ -74,6 +128,8 @@ var Game = /** @class */ (function () {
         // TODO
         this.canvas.clearScreen();
         this.objects.forEach(function (object) {
+            if (object.color === null)
+                return;
             _this.canvas.drawShape(object.x, object.y, object.shape, object.color);
         });
     };
