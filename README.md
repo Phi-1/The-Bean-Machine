@@ -1,8 +1,8 @@
-### The Bean Machine
-# How to start
+# The Bean Machine
+## How to start
 Just add a file named script.js (or any other name if you know how to change it in the html) in the base folder, import game from dist/main.js, and get coding!
 
-# Method reference
+## Method reference
 There are a lot of methods available on the game object you imported, here's a list of all the useful ones:
 
 ### addTicker(ticker)
@@ -13,6 +13,7 @@ Creates a new object at position (x, y) and adds it to the game. Shape takes in 
 
 ### mapLeftMouseButton(callback), mapRightMouseButton(callback)
 Will call the provided callback function every frame while the user holds down their left or right mouse button.
+The game object also contains mouse.x and mouse.y properties, which automatically update with the user's current mouse position.
 
 ### mapKey(key, callback)
 Will call the provided callback function every frame while the user holds down the provided key. See https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key for valid key strings.
@@ -22,3 +23,6 @@ Sets the background color of the game to the provided color string. Accepts any 
 
 ### areColliding(object1, object2)
 Returns true if the two objects' shapes overlap, false otherwise.
+
+### setCameraPosition(x, y)
+Sets the center of the camera to look at position (x, y).

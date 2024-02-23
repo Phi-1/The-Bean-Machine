@@ -62,4 +62,12 @@ export class Canvas {
         canvas.height = window.innerHeight
     }
 
+    public get width(): number {
+        return this.canvas.width
+    }
+
+    public get height(): number {
+        return this.canvas.height
+    }
+
 }

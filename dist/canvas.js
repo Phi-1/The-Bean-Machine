@@ -51,6 +51,20 @@ var Canvas = /** @class */ (function () {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     };
+    Object.defineProperty(Canvas.prototype, "width", {
+        get: function () {
+            return this.canvas.width;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Canvas.prototype, "height", {
+        get: function () {
+            return this.canvas.height;
+        },
+        enumerable: false,
+        configurable: true
+    });
     return Canvas;
 }());
 export { Canvas };

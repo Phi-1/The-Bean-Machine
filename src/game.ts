@@ -1,3 +1,4 @@
+import { Camera } from "./camera"
 import { Canvas } from "./canvas"
 import { GameObject } from "./object"
 import { Circle, Rectangle, Shape } from "./shape"
@@ -5,10 +6,11 @@ import { Circle, Rectangle, Shape } from "./shape"
 export class Game {
 
     private running: boolean
-
     private lastTime: number
     
     private readonly canvas: Canvas
+    private readonly camera: Camera
+
     private readonly objects: GameObject[]
     private readonly tickers: ((dt?: number) => void)[]
 
@@ -21,6 +23,7 @@ export class Game {
     constructor() {
         this.running = false
         this.canvas = new Canvas(document.body)
+        this.camera = new Camera(0, 0)
         this.objects = []
         this.tickers = []
         this.mouse = { x: 0, y: 0 }
@@ -50,7 +53,8 @@ export class Game {
         return object
     }
 
-    // TODO: showText
+    // TODO: showText: use html, not canvas text rendering
+    // TODO: spawnParticle(sprite, x, y, speed, lifetime)
 
     public mapKey(key: string, callback: () => void) {
         // TODO: press once only option
@@ -70,6 +74,11 @@ export class Game {
 
     public setBackgroundColor(color: string) {
         this.canvas.setClearColor(color)
+    }
+
+    public setCameraPosition(x: number, y: number) {
+        this.camera.x = x
+        this.camera.y = y
     }
 
     public areColliding(object1: GameObject, object2: GameObject): boolean {
@@ -156,11 +165,11 @@ export class Game {
     }
 
     private render() {
-        // TODO
         this.canvas.clearScreen()
         this.objects.forEach((object) => {
+            // FIXME: color null will break rendering once sprites are added
             if (object.color === null) return
-            this.canvas.drawShape(object.x, object.y, object.shape, object.color)
+            this.canvas.drawShape(object.x - this.camera.x + this.canvas.width / 2, object.y - this.camera.y + this.canvas.height / 2, object.shape, object.color)
         })
     }
 

@@ -1,9 +1,11 @@
+import { Camera } from "./camera.js";
 import { Canvas } from "./canvas.js";
 import { GameObject } from "./object.js";
 var Game = /** @class */ (function () {
     function Game() {
         this.running = false;
         this.canvas = new Canvas(document.body);
+        this.camera = new Camera(0, 0);
         this.objects = [];
         this.tickers = [];
         this.mouse = { x: 0, y: 0 };
@@ -28,7 +30,8 @@ var Game = /** @class */ (function () {
         this.objects.push(object);
         return object;
     };
-    // TODO: showText
+    // TODO: showText: use html, not canvas text rendering
+    // TODO: spawnParticle(sprite, x, y, speed, lifetime)
     Game.prototype.mapKey = function (key, callback) {
         // TODO: press once only option
         if (!this.keyMap[key]) {
@@ -44,6 +47,10 @@ var Game = /** @class */ (function () {
     };
     Game.prototype.setBackgroundColor = function (color) {
         this.canvas.setClearColor(color);
+    };
+    Game.prototype.setCameraPosition = function (x, y) {
+        this.camera.x = x;
+        this.camera.y = y;
     };
     Game.prototype.areColliding = function (object1, object2) {
         if (object1.shape.type === "rectangle") {
@@ -125,12 +132,12 @@ var Game = /** @class */ (function () {
     };
     Game.prototype.render = function () {
         var _this = this;
-        // TODO
         this.canvas.clearScreen();
         this.objects.forEach(function (object) {
+            // FIXME: color null will break rendering once sprites are added
             if (object.color === null)
                 return;
-            _this.canvas.drawShape(object.x, object.y, object.shape, object.color);
+            _this.canvas.drawShape(object.x - _this.camera.x + _this.canvas.width / 2, object.y - _this.camera.y + _this.canvas.height / 2, object.shape, object.color);
         });
     };
     Game.prototype.initEvents = function () {
