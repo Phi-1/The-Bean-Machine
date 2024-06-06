@@ -14,7 +14,7 @@ export class Game {
     private readonly objects: GameObject[]
     private readonly tickers: ((dt?: number) => void)[]
 
-    public mouse: { x: number, y: number }
+    public mouse: { worldX: number, worldY: number, screenX: number, screenY: number }
     private readonly mouseButtonStates: { left: boolean, right: boolean }
     private readonly mouseInputMap: { left: (() => void)[], right: (() => void)[] }
     private readonly keyStates: { [key: string]: boolean }
@@ -26,7 +26,7 @@ export class Game {
         this.camera = new Camera(0, 0)
         this.objects = []
         this.tickers = []
-        this.mouse = { x: 0, y: 0 }
+        this.mouse = { worldX: 0, worldY: 0, screenX: 0, screenY: 0 }
         this.mouseButtonStates = { left: false, right: false }
         this.mouseInputMap = { left: [], right: [] }
         this.keyStates = {}
@@ -77,8 +77,8 @@ export class Game {
     }
 
     public setCameraPosition(x: number, y: number) {
-        this.camera.x = x
-        this.camera.y = y
+        this.camera.x = x + this.canvas.width / 2
+        this.camera.y = y + this.canvas.height / 2
     }
 
     public areColliding(object1: GameObject, object2: GameObject): boolean {
@@ -169,14 +169,17 @@ export class Game {
         this.objects.forEach((object) => {
             // FIXME: color null will break rendering once sprites are added
             if (object.color === null) return
-            this.canvas.drawShape(object.x - this.camera.x + this.canvas.width / 2, object.y - this.camera.y + this.canvas.height / 2, object.shape, object.color)
+            this.canvas.drawShape(object.x - this.camera.x, object.y - this.camera.y, object.shape, object.color)
         })
     }
 
     private initEvents() {
         window.addEventListener("mousemove", (event) => {
-            this.mouse.x = event.pageX
-            this.mouse.y = event.pageY
+            this.mouse.screenX = event.pageX
+            this.mouse.screenY = event.pageY
+            // FIXME
+            this.mouse.worldX = event.pageX + this.camera.x
+            this.mouse.worldY = event.pageY + this.camera.y
         })
         window.addEventListener("mousedown", (event) => {
             if (event.button === 0) this.mouseButtonStates.left = true

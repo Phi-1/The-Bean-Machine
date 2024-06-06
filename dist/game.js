@@ -8,7 +8,7 @@ var Game = /** @class */ (function () {
         this.camera = new Camera(0, 0);
         this.objects = [];
         this.tickers = [];
-        this.mouse = { x: 0, y: 0 };
+        this.mouse = { worldX: 0, worldY: 0, screenX: 0, screenY: 0 };
         this.mouseButtonStates = { left: false, right: false };
         this.mouseInputMap = { left: [], right: [] };
         this.keyStates = {};
@@ -49,8 +49,8 @@ var Game = /** @class */ (function () {
         this.canvas.setClearColor(color);
     };
     Game.prototype.setCameraPosition = function (x, y) {
-        this.camera.x = x;
-        this.camera.y = y;
+        this.camera.x = x + this.canvas.width / 2;
+        this.camera.y = y + this.canvas.height / 2;
     };
     Game.prototype.areColliding = function (object1, object2) {
         if (object1.shape.type === "rectangle") {
@@ -137,14 +137,17 @@ var Game = /** @class */ (function () {
             // FIXME: color null will break rendering once sprites are added
             if (object.color === null)
                 return;
-            _this.canvas.drawShape(object.x - _this.camera.x + _this.canvas.width / 2, object.y - _this.camera.y + _this.canvas.height / 2, object.shape, object.color);
+            _this.canvas.drawShape(object.x - _this.camera.x, object.y - _this.camera.y, object.shape, object.color);
         });
     };
     Game.prototype.initEvents = function () {
         var _this = this;
         window.addEventListener("mousemove", function (event) {
-            _this.mouse.x = event.pageX;
-            _this.mouse.y = event.pageY;
+            _this.mouse.screenX = event.pageX;
+            _this.mouse.screenY = event.pageY;
+            // FIXME
+            _this.mouse.worldX = event.pageX + _this.camera.x;
+            _this.mouse.worldY = event.pageY + _this.camera.y;
         });
         window.addEventListener("mousedown", function (event) {
             if (event.button === 0)
